@@ -133,7 +133,7 @@ def get_possible_movements(request):
     # Get request data
     piece_id = request.data['piece_id']
     # coordinate = [char for char in request.data['coordinate']]
-    coordinate = request.data['coordinate']
+    coordinate = request.data['coordinate'].lower()
 
     if not len(coordinate)==2:
         return Response(
