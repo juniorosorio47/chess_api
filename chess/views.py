@@ -140,11 +140,12 @@ def get_possible_movements(request):
             data={ 'error': 'Invalid coordinate string' },
             status=status.HTTP_400_BAD_REQUEST)
 
-    # Converts the coordinates
-    converted_coordinate = convert_coordinates_to_numeric(coordinate)
-
     # Generate the board
-    matrix = generate_board(8)
+    board = generate_board(8)
+
+    # Converts the coordinates
+    converted_coordinate = convert_coordinates_to_numeric(board, coordinate)
+
 
     second_turn = []
 
@@ -153,26 +154,26 @@ def get_possible_movements(request):
         piece = PieceSerializer(find_piece)
         
         if piece.data['key']=='k':
-            possible_moves = king_possible_movements(matrix, int(converted_coordinate[0]), int(converted_coordinate[1]))
+            possible_moves = king_possible_movements(board, int(converted_coordinate[0]), int(converted_coordinate[1]))
 
         if piece.data['key']=='q':
-            possible_moves = queen_possible_movements(matrix, int(converted_coordinate[0]), int(converted_coordinate[1]))
+            possible_moves = queen_possible_movements(board, int(converted_coordinate[0]), int(converted_coordinate[1]))
 
         if piece.data['key']=='n':
-            possible_moves = knight_possible_movements(matrix, int(converted_coordinate[0]), int(converted_coordinate[1]))
+            possible_moves = knight_possible_movements(board, int(converted_coordinate[0]), int(converted_coordinate[1]))
 
             for item in possible_moves:
-                converted_coord = convert_coordinates_to_numeric(item)
-                second_turn.append({f'{item}':knight_possible_movements(matrix, int(converted_coord[0]), int(converted_coord[1]))})
+                converted_coord = convert_coordinates_to_numeric(board, item)
+                second_turn.append({f'{item}':knight_possible_movements(board, int(converted_coord[0]), int(converted_coord[1]))})
 
         if piece.data['key']=='b':
-            possible_moves = bishop_possible_movements(matrix, int(converted_coordinate[0]), int(converted_coordinate[1]))
+            possible_moves = bishop_possible_movements(board, int(converted_coordinate[0]), int(converted_coordinate[1]))
 
         if piece.data['key']=='r':
-            possible_moves = rook_possible_movements(matrix, int(converted_coordinate[0]), int(converted_coordinate[1]))
+            possible_moves = rook_possible_movements(board, int(converted_coordinate[0]), int(converted_coordinate[1]))
 
         if piece.data['key']=='p':
-            possible_moves = pawn_possible_movements(matrix, int(converted_coordinate[0]), int(converted_coordinate[1]), piece.data)
+            possible_moves = pawn_possible_movements(board, int(converted_coordinate[0]), int(converted_coordinate[1]), piece.data)
 
         # Remove the coordinate from the results
         possible_moves = [i for i in possible_moves if i != coordinate]

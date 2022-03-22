@@ -9,6 +9,8 @@ class Piece(models.Model):
     class Meta:
         abstract:True
 
+
+
 class King(Piece):
 
     def create(self, color):

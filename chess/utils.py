@@ -50,9 +50,7 @@ def find_index_in_matrix(mat, item):
                 return (r, c)
                 
 # Get a board in algebraic notation and return its index
-def convert_coordinates_to_numeric(coordinate):
-    board = generate_board(8)
-
+def convert_coordinates_to_numeric(board, coordinate):
     return find_index_in_matrix(board, coordinate)
 
 # Range of chars
